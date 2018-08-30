@@ -28,6 +28,7 @@ class PuOkCupidClient implements PuApi {
         );
     };
 
+    // TO-DO: port these
     public getProfilesLiked(): any {};
     public getPossibleMatches(): any {};
     public getMessages(): any {};

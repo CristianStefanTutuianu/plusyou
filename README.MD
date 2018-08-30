@@ -1,7 +1,3 @@
-This package was created following the guidelines from:
-https://basarat.gitbooks.io/typescript/docs/quick/nodejs.html
-https://github.com/xogeny/ts-jest-sample
-
 ## How to run the project
 
 ***Run the project using: 'npm start'
@@ -10,7 +6,6 @@ To change running parameters used by nodemon you need to amend
 the section 'scripts' in package.json
 
 ***Test the project using: 'npm test'
-
 
 ## Project structure
 
@@ -25,10 +20,5 @@ available classes, interfaces & types
 -> Each package should test its code inside a sub-package folder called '__tests__'
 
 ## TODO
-- https://www.npmjs.com/package/request-promise
-- finish login module for OkCupid client + Test it
-- add testing library - probably jest to package.json
-- add tslint to the project
-- add testing targets (__tests__ + tst) to config
-- port existing projects
+- port ok cupid rest of methods
 - https://github.com/typestack/class-transformer - possibly something we need
