@@ -25,7 +25,7 @@ available classes, interfaces & types
 -> Each package should test its code inside a sub-package folder called '__tests__'
 
 ## TODO
-
+- https://www.npmjs.com/package/request-promise
 - finish login module for OkCupid client + Test it
 - add testing library - probably jest to package.json
 - add tslint to the project

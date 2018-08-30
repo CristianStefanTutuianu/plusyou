@@ -1,11 +1,5 @@
-import {
-    RequestMethod,
-    RequestAPI,
-    buildQueryString
-} from "./Requester"
+import requestAPI from "./requestAPI"
 
 export {
-    RequestMethod,
-    RequestAPI,
-    buildQueryString
+    requestAPI
 }

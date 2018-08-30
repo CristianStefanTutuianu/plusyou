@@ -1,5 +1,9 @@
 import PuApi from "../../pu-api";
-import { RequestAPI } from "../../pu-utils";
+import testCredentials from "../../pu-static-data";
+import {requestAPI} from "../../pu-utils";
+
+import { getOkCupidHeaders } from "./Utils";
+import { OkCupidEndpoint } from "./SharedTypes";
 
 /*
 * Singleton class - OkCupid client
@@ -9,30 +13,47 @@ class PuOkCupid implements PuApi {
 
     public static getInstance() {
         if(!PuOkCupid.puOkCupidClientInstance) {
-            PuOkCupid.puOkCupidClientInstance = new PuOkCupid(new RequestAPI());
+            PuOkCupid.puOkCupidClientInstance = new PuOkCupid();
         }
 
         return PuOkCupid.puOkCupidClientInstance;
     }
 
     public oauthToken: string | undefined;
-    public requestAPI: RequestAPI;
-    public hasAuthToken: boolean = false;
 
-    private constructor(requestAPI: RequestAPI) {
-        this.requestAPI = requestAPI;
+    private constructor() {
         console.log("PuOkCupid initialized!");
     };
 
     public run(): void {
-        this.login();
+        this.login(testCredentials.mock_user.username, testCredentials.mock_user.password)
+            .then((body:any)  => {
+                this.oauthToken = JSON.parse(body).oauth_accesstoken;
+                console.log(this.oauthToken);
+
+                // Subsequent PuOkCupidClient method calls go here;
+
+            }).catch((err:any)=>{
+                console.log("PuOkCupidClient login error" + JSON.parse(err));
+            });
     };
 
-    public login(): void {
-        //TO-DO set it in the callback - when it becomes available
-        this.oauthToken = "mockAuthToken";
-        this.hasAuthToken = true;
-        console.log("PuOkCupid login successful");
+    public login(username: string, password: string): Promise<any> {
+        // TODO: formalize this inside request API
+        const loginForm = {
+            okc_api: 1,
+            username: username,
+            password: password,
+        };
+
+        const options = {
+            method: 'POST',
+            uri: OkCupidEndpoint.LOGIN,
+            form: loginForm,
+            headers: getOkCupidHeaders()
+        };
+         
+        return requestAPI(options);
     };
 
     public getProfilesLiked(): any {};

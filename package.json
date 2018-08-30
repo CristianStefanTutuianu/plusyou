@@ -23,6 +23,12 @@
     "ts-node": "^7.0.1",
     "typescript": "^3.0.3"
   },
- 
-  "exclude": ["node_modules", "lib"]
+  "exclude": [
+    "node_modules",
+    "lib"
+  ],
+  "dependencies": {
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
+  }
 }

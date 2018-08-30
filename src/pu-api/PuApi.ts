@@ -1,13 +1,13 @@
 export default interface PuApi {    
-    login(): void | Promise<void>;
+    login(username:string, password:string): any | Promise<any>;
 
     getProfilesLiked(): any | Promise<any>;
     getPossibleMatches(): any | Promise<any>;
     getMessages(): any | Promise<any>;
 
-    unlikeProfile(): void | Promise<void>;
-    likeProfile(): void | Promise<void>;
-    messageProfile(): void | Promise<void>;
+    unlikeProfile(): any | Promise<any>;
+    likeProfile(): any | Promise<any>;
+    messageProfile(): any | Promise<any>;
 
-    run(mode?:any): void | any | Promise<void | any>;
+    run(mode?:any): any | Promise<any>;
 }
