@@ -5,11 +5,11 @@ import { getOkCupidLoginForm, getOkCupidHeaders, getOkCupidOauthToken } from "./
 import { OkCupidEndpoint, OkCupidCredentials } from "./SharedTypes";
 
 class PuOkCupidClient implements PuApi {
-    private user: OkCupidCredentials;
+    private credentials: OkCupidCredentials;
 
-    public constructor(user: OkCupidCredentials) {
-        this.user = user;
-        console.log("PuOkCupid initialized for user:" + user.username);
+    public constructor(credentials: OkCupidCredentials) {
+        this.credentials = credentials;
+        console.log("PuOkCupid initialized for user:" + credentials.username);
     };
 
     public run(): void {
@@ -23,7 +23,7 @@ class PuOkCupidClient implements PuApi {
     public login(): Promise<any> {         
         return RequestAPI.makeWebPostRequest(
             OkCupidEndpoint.LOGIN,
-            getOkCupidLoginForm(this.user),
+            getOkCupidLoginForm(this.credentials),
             getOkCupidHeaders()
         );
     };
