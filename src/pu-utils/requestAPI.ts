@@ -1,4 +1,4 @@
-// Usage: https://www.npmjs.com/package/request-promise
+// DOCS: https://www.npmjs.com/package/request-promise
 let requestAPI = require('request-promise');
 
 class RequestAPI {
@@ -18,6 +18,8 @@ class RequestAPI {
     public static makeWebGetRequest() {
         return Promise.resolve(console.log("makeWebGetRequest"));
     }
+
+    //TODO: implement more use cases as described in DOCS
 }
 
     

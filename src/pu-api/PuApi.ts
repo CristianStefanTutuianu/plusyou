@@ -1,5 +1,5 @@
 export default interface PuApi {    
-    login(username:string, password:string): any | Promise<any>;
+    login(): any | Promise<any>;
 
     getProfilesLiked(): any | Promise<any>;
     getPossibleMatches(): any | Promise<any>;

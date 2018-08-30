@@ -9,7 +9,7 @@ class PuOkCupidClient implements PuApi {
 
     public constructor(user: OkCupidCredentials) {
         this.user = user;
-        console.log("PuOkCupid initialized!");
+        console.log("PuOkCupid initialized for user:" + user.username);
     };
 
     public run(): void {
