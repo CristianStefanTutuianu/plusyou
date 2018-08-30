@@ -1,59 +1,31 @@
 import PuApi from "../../pu-api";
-import testCredentials from "../../pu-static-data";
-import {requestAPI} from "../../pu-utils";
+import {RequestAPI} from "../../pu-utils";
 
-import { getOkCupidHeaders } from "./Utils";
-import { OkCupidEndpoint } from "./SharedTypes";
+import { getOkCupidLoginForm, getOkCupidHeaders, getOkCupidOauthToken } from "./Utils";
+import { OkCupidEndpoint, OkCupidCredentials } from "./SharedTypes";
 
-/*
-* Singleton class - OkCupid client
-*/
-class PuOkCupid implements PuApi {
-    private static puOkCupidClientInstance:PuOkCupid;
+class PuOkCupidClient implements PuApi {
+    private user: OkCupidCredentials;
 
-    public static getInstance() {
-        if(!PuOkCupid.puOkCupidClientInstance) {
-            PuOkCupid.puOkCupidClientInstance = new PuOkCupid();
-        }
-
-        return PuOkCupid.puOkCupidClientInstance;
-    }
-
-    public oauthToken: string | undefined;
-
-    private constructor() {
+    public constructor(user: OkCupidCredentials) {
+        this.user = user;
         console.log("PuOkCupid initialized!");
     };
 
     public run(): void {
-        this.login(testCredentials.mock_user.username, testCredentials.mock_user.password)
-            .then((body:any)  => {
-                this.oauthToken = JSON.parse(body).oauth_accesstoken;
-                console.log(this.oauthToken);
-
-                // Subsequent PuOkCupidClient method calls go here;
-
-            }).catch((err:any)=>{
-                console.log("PuOkCupidClient login error" + JSON.parse(err));
+        this.login()
+            .then((responseBody) => getOkCupidOauthToken(responseBody))
+            .then((oauth_token) => {
+                console.log(oauth_token);
             });
     };
 
-    public login(username: string, password: string): Promise<any> {
-        // TODO: formalize this inside request API
-        const loginForm = {
-            okc_api: 1,
-            username: username,
-            password: password,
-        };
-
-        const options = {
-            method: 'POST',
-            uri: OkCupidEndpoint.LOGIN,
-            form: loginForm,
-            headers: getOkCupidHeaders()
-        };
-         
-        return requestAPI(options);
+    public login(): Promise<any> {         
+        return RequestAPI.makeWebPostRequest(
+            OkCupidEndpoint.LOGIN,
+            getOkCupidLoginForm(this.user),
+            getOkCupidHeaders()
+        );
     };
 
     public getProfilesLiked(): any {};
@@ -65,6 +37,4 @@ class PuOkCupid implements PuApi {
     public messageProfile(): void {};
 }
 
-const puOkCupidClient = PuOkCupid.getInstance();
-
-export default puOkCupidClient;
+export default PuOkCupidClient;

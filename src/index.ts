@@ -1,5 +1,13 @@
-import {puOkCupidClient} from "./pu-clients"
+import {PuOkCupidClient} from "./pu-clients"
+import testCredentials from "./pu-static-data";
 
+function main() {
+    const user = testCredentials.mock_user;
+    const okCupidClient = new PuOkCupidClient(user);
 
-puOkCupidClient.run();
+    okCupidClient.run();
+}
+
+main();
+
 

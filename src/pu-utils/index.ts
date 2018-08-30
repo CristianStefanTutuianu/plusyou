@@ -1,5 +1,5 @@
-import requestAPI from "./requestAPI"
+import RequestAPI from "./requestAPI"
 
 export {
-    requestAPI
+    RequestAPI
 }

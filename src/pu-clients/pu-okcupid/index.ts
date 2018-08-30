@@ -1,3 +1,3 @@
-import puOkCupidClient from "./PuOkCupidClient";
+import PuOkCupidClient from "./PuOkCupidClient";
 
-export default puOkCupidClient;
+export default PuOkCupidClient;

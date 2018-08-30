@@ -1,5 +1,5 @@
-import puOkCupidClient from "./pu-okcupid"
+import PuOkCupidClient from "./pu-okcupid"
 
 export {
-    puOkCupidClient
+    PuOkCupidClient
 }

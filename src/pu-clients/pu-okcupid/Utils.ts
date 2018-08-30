@@ -1,3 +1,17 @@
+import { OkCupidCredentials } from "./SharedTypes";
+
+function getOkCupidLoginForm(user: OkCupidCredentials) {
+  return {
+    okc_api: 1,
+    username: user.username,
+    password: user.password,
+  };
+}
+
+function getOkCupidOauthToken(responseBody: any) {
+  return responseBody.oauth_accesstoken;
+}
+
 function getOkCupidHeaders(oauth_token ?: string) {
   if (oauth_token) {
     return {
@@ -15,5 +29,7 @@ function getOkCupidHeaders(oauth_token ?: string) {
 }
 
 export {
-  getOkCupidHeaders
+  getOkCupidLoginForm,
+  getOkCupidHeaders,
+  getOkCupidOauthToken
 }

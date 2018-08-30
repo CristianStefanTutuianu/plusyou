@@ -20,6 +20,12 @@ enum OkCupidEndpoint {
     CONNECTIONS = "https =//www.okcupid.com/1/apitun/connections/outgoing",
 }
 
+type OkCupidCredentials = {
+    username: string,
+    password: string
+}
+
 export {
+    OkCupidCredentials,
     OkCupidEndpoint
 }
