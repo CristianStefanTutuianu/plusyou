@@ -2,7 +2,7 @@
 let requestAPI = require('request-promise');
 
 class RequestAPI {
-    public static makeWebPostRequest(uri: string, form?: any, headers?: any): Promise<any> {
+    public static makeHTMLFormPostRequest(uri: string, form?: any, headers?: any): Promise<any> {
         const options = {
             method: 'POST',
             uri: uri,
@@ -14,9 +14,21 @@ class RequestAPI {
         return requestAPI(options);
     }
 
+    public static makeRESTPostRequest(uri: string, body?: JSON, headers?: any): Promise<any> {
+        const options = {
+            method: 'POST',
+            uri: uri,
+            body: body,
+            headers: headers,
+            json: true
+        }
+
+        return requestAPI(options);
+    }
+
     //TODO
-    public static makeWebGetRequest() {
-        return Promise.resolve(console.log("makeWebGetRequest"));
+    public static makeGetRequest() {
+        return Promise.resolve(console.log("makeGetRequest"));
     }
 
     //TODO: implement more use cases as described in DOCS

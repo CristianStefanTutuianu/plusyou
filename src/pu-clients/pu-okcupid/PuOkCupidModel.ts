@@ -6,11 +6,16 @@ import { PuOkCupidMode, PuOkCupidCredentials } from "./SharedTypes";
 export default class PuOkCupidModel {
     public mode: PuOkCupidMode;
     public credentials: PuOkCupidCredentials;
-    public searchQuery: any;
+    public searchQuery: JSON | undefined;
     public quickSearchQuery: any;
 
-    public constructor(mode: PuOkCupidMode, credentials: PuOkCupidCredentials) {
+    public constructor(mode: PuOkCupidMode,
+                    credentials: PuOkCupidCredentials) {
         this.mode = mode;
         this.credentials = credentials;
+    }
+
+    public withSearchQuery(searchQuery: JSON) {
+        this.searchQuery = searchQuery;
     }
 }

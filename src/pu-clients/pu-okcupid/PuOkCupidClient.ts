@@ -1,7 +1,7 @@
 import PuApi from "../../pu-api";
 import {RequestAPI} from "../../pu-utils";
 
-import { getOkCupidLoginForm, getOkCupidHeaders, getOkCupidOauthToken } from "./Utils";
+import { getOkCupidLoginForm, getOkCupidHeaders, getOkCupidOauthToken, getOkCupidSearchQuery, getOkCupidMatchesFromSearchQuery } from "./Utils";
 import { PuOkCupidEndpoint, PuOkCupidMode } from "./SharedTypes";
 import PuOkCupidModel from "./PuOkCupidModel";
 
@@ -15,20 +15,23 @@ class PuOkCupidClient implements PuApi {
     };
 
     public run(): void {
-        // TODO handle puOkCupidModel.mode
         if (this.puOkCupidModel.mode = PuOkCupidMode.MATCH_USERS) {
             this.login()
             .then((responseBody) => getOkCupidOauthToken(responseBody))
             .then((oauthToken) => {
                 this.oauthToken = oauthToken;
-                console.log(oauthToken);
+                return this.getPossibleMatches();
+            })
+            .then((prospectMatches) => getOkCupidMatchesFromSearchQuery(prospectMatches))
+            .then((parsedProspectMatches) => {
+                console.log(parsedProspectMatches);
             });
         }
 
     };
 
     public login(): Promise<any> {         
-        return RequestAPI.makeWebPostRequest(
+        return RequestAPI.makeHTMLFormPostRequest(
             PuOkCupidEndpoint.LOGIN,
             getOkCupidLoginForm(this.puOkCupidModel.credentials),
             getOkCupidHeaders()
@@ -36,11 +39,11 @@ class PuOkCupidClient implements PuApi {
     };
 
     // TO-DO: port these
-    public getPossibleMatches(query: any): any {
+    public getPossibleMatches(): any {
         // uses body instead of form where body is the query
-        return RequestAPI.makeWebPostRequest(
+        return RequestAPI.makeRESTPostRequest(
             PuOkCupidEndpoint.SEARCH,
-            query,
+            getOkCupidSearchQuery(this.puOkCupidModel.searchQuery),
             getOkCupidHeaders(this.oauthToken)
         )
     };
