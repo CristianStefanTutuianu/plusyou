@@ -8,6 +8,7 @@ export default class PuOkCupidModel {
     public credentials: PuOkCupidCredentials;
     public searchQuery: JSON | undefined;
     public quickSearchQuery: any;
+    public oauthToken: string = "";
 
     public constructor(mode: PuOkCupidMode,
                     credentials: PuOkCupidCredentials) {
@@ -17,5 +18,9 @@ export default class PuOkCupidModel {
 
     public withSearchQuery(searchQuery: JSON) {
         this.searchQuery = searchQuery;
+    }
+
+    public setOauthToken(oauthToken: string) {
+        this.oauthToken = oauthToken;
     }
 }

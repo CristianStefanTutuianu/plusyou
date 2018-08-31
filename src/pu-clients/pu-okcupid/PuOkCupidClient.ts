@@ -7,7 +7,6 @@ import PuOkCupidModel from "./PuOkCupidModel";
 
 class PuOkCupidClient implements PuApi {
     private puOkCupidModel: PuOkCupidModel;
-    private oauthToken: string | undefined;
 
     public constructor(puOkCupidModel: PuOkCupidModel) {
         this.puOkCupidModel = puOkCupidModel;
@@ -23,21 +22,29 @@ class PuOkCupidClient implements PuApi {
     };
 
     public login(): Promise<any> {         
-        return RequestAPI.makeHTMLFormPostRequest(
+        return RequestAPI.htmlFormPostRequest(
             PuOkCupidEndpoint.LOGIN,
             getOkCupidLoginForm(this.puOkCupidModel.credentials),
             getOkCupidHeaders()
-        );
+        ).then(loginResponse => {
+            this.puOkCupidModel.setOauthToken(getOkCupidOauthToken(loginResponse));
+        });
     };
 
-    // TO-DO: port these
     public getUsers(): Promise<any> {
-        // uses body instead of form where body is the query
-        return RequestAPI.makeRESTPostRequest(
-            PuOkCupidEndpoint.SEARCH,
-            getOkCupidSearchQuery(this.puOkCupidModel.searchQuery),
-            getOkCupidHeaders(this.oauthToken)
-        )
+        let promise: Promise<any>;
+
+        if (this.puOkCupidModel.oauthToken) {
+            promise =  RequestAPI.restPostRequest(PuOkCupidEndpoint.SEARCH,
+                getOkCupidSearchQuery(this.puOkCupidModel.searchQuery),
+                getOkCupidHeaders(this.puOkCupidModel.oauthToken)); 
+        } else {
+            promise = new Promise(()=> {
+                throw new Error("Missing Auth token");
+            });
+        }
+
+        return promise;
     };
 
     public getProfilesLiked(): any {};
@@ -49,10 +56,7 @@ class PuOkCupidClient implements PuApi {
 
     private getProspectMatches(): Promise<any> {
         return this.login()
-            .then((responseBody) => {
-                this.oauthToken = getOkCupidOauthToken(responseBody)
-                return this.getUsers();
-            })
+            .then(() => this.getUsers())
             .then((prospectMatches) => {
                 const parsedMatches = getOkCupidMatchesFromSearchQuery(prospectMatches);
                 console.log(parsedMatches);
