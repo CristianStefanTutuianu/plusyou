@@ -2,7 +2,7 @@ export default interface PuApi {
     login(): any | Promise<any>;
 
     getProfilesLiked(): any | Promise<any>;
-    getPossibleMatches(query: any): any | Promise<any>; // search
+    getUsers(query: any): any | Promise<any>; // search
     getMessages(): any | Promise<any>;
 
     unlikeProfile(): any | Promise<any>;
