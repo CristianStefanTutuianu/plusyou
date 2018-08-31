@@ -15,9 +15,11 @@ class PuOkCupidClient implements PuApi {
     };
 
     public run(): void {
-        if (this.puOkCupidModel.mode = PuOkCupidMode.MATCH_USERS) {
-            this.getProspectMatches();
-        }
+        switch(this.puOkCupidModel.mode) { 
+            case PuOkCupidMode.MATCH_USERS: { 
+                this.getProspectMatches();
+            }  
+         } 
     };
 
     public login(): Promise<any> {         
@@ -47,15 +49,13 @@ class PuOkCupidClient implements PuApi {
 
     private getProspectMatches(): Promise<any> {
         return this.login()
-            .then((responseBody) => getOkCupidOauthToken(responseBody))
-            .then((oauthToken) => {
-                this.oauthToken = oauthToken;
+            .then((responseBody) => {
+                this.oauthToken = getOkCupidOauthToken(responseBody)
                 return this.getUsers();
             })
-            .then((prospectMatches) => getOkCupidMatchesFromSearchQuery(prospectMatches))
-            .then((parsedProspectMatches) => {
-                console.log(parsedProspectMatches);
-                return parsedProspectMatches;
+            .then((prospectMatches) => {
+                const parsedMatches = getOkCupidMatchesFromSearchQuery(prospectMatches);
+                console.log(parsedMatches);
             });
     }
 }
