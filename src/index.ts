@@ -1,9 +1,8 @@
-import {PuOkCupidClient, PuOkCupidModel} from "./pu-clients"
-import testCredentials from "./pu-static-data";
-import { OkCupidMode } from "./pu-clients/pu-okcupid/SharedTypes";
+import {PuOkCupidClient, PuOkCupidModel, PuOkCupidMode} from "./pu-clients"
+import puOkCupidCredentials from "./pu-static-data";
 
 function main() {
-    const puOkCupidModel = new PuOkCupidModel(OkCupidMode.MATCH_USERS, testCredentials.mock_user);
+    const puOkCupidModel = new PuOkCupidModel(PuOkCupidMode.MATCH_USERS, puOkCupidCredentials.mock_user);
     const okCupidClient = new PuOkCupidClient(puOkCupidModel);
 
     okCupidClient.run();
