@@ -31,7 +31,7 @@ class PuOkCupidClient implements PuApi {
     };
 
     // TO-DO: port these
-    public getUsers(): any {
+    public getUsers(): Promise<any> {
         // uses body instead of form where body is the query
         return RequestAPI.makeRESTPostRequest(
             PuOkCupidEndpoint.SEARCH,
