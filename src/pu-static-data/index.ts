@@ -1,3 +1,3 @@
-import testCredentials from "./testCredentials";
+import puOkCupidCredentials from "./PuOkCupidCredentials";
 
-export default testCredentials;
+export default puOkCupidCredentials;

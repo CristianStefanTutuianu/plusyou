@@ -2,35 +2,50 @@ import PuApi from "../../pu-api";
 import {RequestAPI} from "../../pu-utils";
 
 import { getOkCupidLoginForm, getOkCupidHeaders, getOkCupidOauthToken } from "./Utils";
-import { OkCupidEndpoint, OkCupidCredentials } from "./SharedTypes";
+import { PuOkCupidEndpoint, PuOkCupidMode } from "./SharedTypes";
+import PuOkCupidModel from "./PuOkCupidModel";
 
 class PuOkCupidClient implements PuApi {
-    private credentials: OkCupidCredentials;
+    private puOkCupidModel: PuOkCupidModel;
+    private oauthToken: string | undefined;
 
-    public constructor(credentials: OkCupidCredentials) {
-        this.credentials = credentials;
-        console.log("PuOkCupid initialized for user:" + credentials.username);
+    public constructor(puOkCupidModel: PuOkCupidModel) {
+        this.puOkCupidModel = puOkCupidModel;
+        console.log("PuOkCupid initialized for user:" + puOkCupidModel.credentials.username);
     };
 
     public run(): void {
-        this.login()
+        // TODO handle puOkCupidModel.mode
+        if (this.puOkCupidModel.mode = PuOkCupidMode.MATCH_USERS) {
+            this.login()
             .then((responseBody) => getOkCupidOauthToken(responseBody))
-            .then((oauth_token) => {
-                console.log(oauth_token);
+            .then((oauthToken) => {
+                this.oauthToken = oauthToken;
+                console.log(oauthToken);
             });
+        }
+
     };
 
     public login(): Promise<any> {         
         return RequestAPI.makeWebPostRequest(
-            OkCupidEndpoint.LOGIN,
-            getOkCupidLoginForm(this.credentials),
+            PuOkCupidEndpoint.LOGIN,
+            getOkCupidLoginForm(this.puOkCupidModel.credentials),
             getOkCupidHeaders()
         );
     };
 
     // TO-DO: port these
+    public getPossibleMatches(query: any): any {
+        // uses body instead of form where body is the query
+        return RequestAPI.makeWebPostRequest(
+            PuOkCupidEndpoint.SEARCH,
+            query,
+            getOkCupidHeaders(this.oauthToken)
+        )
+    };
+
     public getProfilesLiked(): any {};
-    public getPossibleMatches(): any {};
     public getMessages(): any {};
 
     public unlikeProfile(): void {};

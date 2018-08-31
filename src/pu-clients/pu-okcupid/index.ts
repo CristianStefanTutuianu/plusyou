@@ -1,3 +1,7 @@
 import PuOkCupidClient from "./PuOkCupidClient";
+import PuOkCupidModel from "./PuOkCupidModel";
 
-export default PuOkCupidClient;
+export {
+    PuOkCupidClient,
+    PuOkCupidModel
+};

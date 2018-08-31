@@ -1,6 +1,6 @@
-import { OkCupidCredentials } from "./SharedTypes";
+import { PuOkCupidCredentials } from "./SharedTypes";
 
-function getOkCupidLoginForm(user: OkCupidCredentials) {
+function getOkCupidLoginForm(user: PuOkCupidCredentials) {
   return {
     okc_api: 1,
     username: user.username,

@@ -1,5 +1,6 @@
-import PuOkCupidClient from "./pu-okcupid"
+import { PuOkCupidClient, PuOkCupidModel} from "./pu-okcupid";
 
 export {
-    PuOkCupidClient
+    PuOkCupidClient,
+    PuOkCupidModel
 }

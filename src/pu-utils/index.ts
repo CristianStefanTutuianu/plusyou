@@ -1,4 +1,4 @@
-import RequestAPI from "./requestAPI"
+import RequestAPI from "./RequestAPI"
 
 export {
     RequestAPI
