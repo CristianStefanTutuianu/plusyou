@@ -16,18 +16,8 @@ class PuOkCupidClient implements PuApi {
 
     public run(): void {
         if (this.puOkCupidModel.mode = PuOkCupidMode.MATCH_USERS) {
-            this.login()
-            .then((responseBody) => getOkCupidOauthToken(responseBody))
-            .then((oauthToken) => {
-                this.oauthToken = oauthToken;
-                return this.getPossibleMatches();
-            })
-            .then((prospectMatches) => getOkCupidMatchesFromSearchQuery(prospectMatches))
-            .then((parsedProspectMatches) => {
-                console.log(parsedProspectMatches);
-            });
+            this.getProspectMatches();
         }
-
     };
 
     public login(): Promise<any> {         
@@ -39,7 +29,7 @@ class PuOkCupidClient implements PuApi {
     };
 
     // TO-DO: port these
-    public getPossibleMatches(): any {
+    public getUsers(): any {
         // uses body instead of form where body is the query
         return RequestAPI.makeRESTPostRequest(
             PuOkCupidEndpoint.SEARCH,
@@ -54,6 +44,20 @@ class PuOkCupidClient implements PuApi {
     public unlikeProfile(): void {};
     public likeProfile(): void {};
     public messageProfile(): void {};
+
+    private getProspectMatches(): Promise<any> {
+        return this.login()
+            .then((responseBody) => getOkCupidOauthToken(responseBody))
+            .then((oauthToken) => {
+                this.oauthToken = oauthToken;
+                return this.getUsers();
+            })
+            .then((prospectMatches) => getOkCupidMatchesFromSearchQuery(prospectMatches))
+            .then((parsedProspectMatches) => {
+                console.log(parsedProspectMatches);
+                return parsedProspectMatches;
+            });
+    }
 }
 
 export default PuOkCupidClient;
