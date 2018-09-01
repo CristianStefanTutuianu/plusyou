@@ -1,3 +1,4 @@
 import puOkCupidCredentials from "./PuOkCupidCredentials";
+import puOkCupidSearchQueryModels from "./PuOkCupidSearchQueryModels"
 
-export default puOkCupidCredentials;
+export  {puOkCupidCredentials, puOkCupidSearchQueryModels};

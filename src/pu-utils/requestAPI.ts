@@ -14,7 +14,7 @@ class RequestAPI {
         return requestAPI(options);
     }
 
-    public static restPostRequest(uri: string, body?: JSON, headers?: any): Promise<any> {
+    public static restPostRequest(uri: string, body?: any, headers?: any): Promise<any> {
         const options = {
             method: 'POST',
             uri: uri,

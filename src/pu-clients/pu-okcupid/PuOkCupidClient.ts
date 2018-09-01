@@ -1,7 +1,7 @@
 import PuApi from "../../pu-api";
 import {RequestAPI} from "../../pu-utils";
 
-import { getOkCupidLoginForm, getOkCupidHeaders, getOkCupidOauthToken, getOkCupidSearchQuery, getOkCupidMatchesFromSearchQuery } from "./Utils";
+import { getOkCupidLoginForm, getOkCupidHeaders, getOkCupidOauthToken, getOkCupidMatchesFromSearchQuery } from "./Utils";
 import { PuOkCupidEndpoint, PuOkCupidMode } from "./SharedTypes";
 import PuOkCupidModel from "./PuOkCupidModel";
 
@@ -28,23 +28,17 @@ class PuOkCupidClient implements PuApi {
             getOkCupidHeaders()
         ).then(loginResponse => {
             this.puOkCupidModel.setOauthToken(getOkCupidOauthToken(loginResponse));
+        }).catch(error => {
+            return new Promise(()=> {
+                throw new Error("Missing Auth token" + JSON.stringify(error));
+            });
         });
     };
 
     public getUsers(): Promise<any> {
-        let promise: Promise<any>;
-
-        if (this.puOkCupidModel.oauthToken) {
-            promise =  RequestAPI.restPostRequest(PuOkCupidEndpoint.SEARCH,
-                getOkCupidSearchQuery(this.puOkCupidModel.searchQuery),
+        return RequestAPI.restPostRequest(PuOkCupidEndpoint.SEARCH,
+                this.puOkCupidModel.searchQuery || {},
                 getOkCupidHeaders(this.puOkCupidModel.oauthToken)); 
-        } else {
-            promise = new Promise(()=> {
-                throw new Error("Missing Auth token");
-            });
-        }
-
-        return promise;
     };
 
     public getProfilesLiked(): any {};
@@ -56,7 +50,7 @@ class PuOkCupidClient implements PuApi {
 
     private getProspectMatches(): Promise<any> {
         return this.login()
-            .then(() => this.getUsers())
+            .then(() => { return this.getUsers()} )
             .then((prospectMatches) => {
                 const parsedMatches = getOkCupidMatchesFromSearchQuery(prospectMatches);
                 console.log(parsedMatches);

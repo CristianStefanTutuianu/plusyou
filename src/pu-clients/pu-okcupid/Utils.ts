@@ -28,16 +28,8 @@ function getOkCupidHeaders(oauthToken?: string) {
   }
 }
 
-function getOkCupidSearchQuery(searchQuery: JSON | undefined): JSON {
-   if(searchQuery) {
-      // TO-DO add search query JSON to pu-static-data
-     return JSON.parse("{}");
-   }
-
-   return JSON.parse("{}");
-}
-
 function getOkCupidMatchesFromSearchQuery(matches: any): any {
+  //TO-DO: implement some kind of abstraction
   return matches;
 }
 
@@ -46,5 +38,4 @@ export {
   getOkCupidHeaders,
   getOkCupidMatchesFromSearchQuery,
   getOkCupidOauthToken,
-  getOkCupidSearchQuery
 }
