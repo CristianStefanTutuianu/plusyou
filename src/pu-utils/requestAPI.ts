@@ -11,13 +11,17 @@ class RequestAPI {
             json: true
         }
 
-        return requestAPI(options);
+        return requestAPI(options, (response: any, body: any, error: any)=> {
+            if(error) {
+                console.log("REJECTED request: ", error.request, " \n REASON: ", error.body | error.message);
+            };
+        });
     }
 
     public static restPostRequest(uri: string, body?: any, headers?: any): Promise<any> {
         const options = {
             method: 'POST',
-            uri: uri,
+            url: uri,
             body: body,
             headers: headers,
             json: true

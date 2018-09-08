@@ -27,8 +27,33 @@ enum PuOkCupidMode {
     MATCH_USERS
 }
 
+type PuOkCupidShortUserProfile = {
+    online: boolean,
+    userinfo: any,
+    last_login: number,
+    inactive: boolean,
+    userid: string,
+    username: string,
+    staff: boolean,
+    thumbs: Array<any>,
+    isAdmin: boolean
+}
+
+type PuOkCupidSearchUserProfileModel = {
+    total_matches: string,
+    data: Array<PuOkCupidShortUserProfile>,
+    paging: {
+        cursors: {
+            before: string,
+            current: string,
+            after: string
+        }
+    }
+}
+
 export {
     PuOkCupidCredentials,
+    PuOkCupidSearchUserProfileModel,
     PuOkCupidEndpoint,
     PuOkCupidMode
 }

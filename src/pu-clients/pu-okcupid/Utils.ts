@@ -1,4 +1,4 @@
-import { PuOkCupidCredentials } from "./SharedTypes";
+import { PuOkCupidCredentials, PuOkCupidSearchUserProfileModel } from "./SharedTypes";
 
 function getOkCupidLoginForm(user: PuOkCupidCredentials) {
   return {
@@ -28,14 +28,20 @@ function getOkCupidHeaders(oauthToken?: string) {
   }
 }
 
-function getOkCupidMatchesFromSearchQuery(matches: any): any {
-  //TO-DO: implement some kind of abstraction
-  return matches;
+function getOkCupidUserIdListFromSearchQuery(matches: PuOkCupidSearchUserProfileModel): any {
+  const usersList: any = matches.data;
+  let userIds: Array<string> = [];
+
+  for(let index in usersList) {
+    userIds.push(usersList[index].userid)
+  }
+
+  return userIds;
 }
 
 export {
   getOkCupidLoginForm,
   getOkCupidHeaders,
-  getOkCupidMatchesFromSearchQuery,
+  getOkCupidUserIdListFromSearchQuery,
   getOkCupidOauthToken,
 }

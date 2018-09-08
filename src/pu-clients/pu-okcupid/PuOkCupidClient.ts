@@ -1,7 +1,7 @@
 import PuApi from "../../pu-api";
 import {RequestAPI, Logger} from "../../pu-utils";
 
-import { getOkCupidLoginForm, getOkCupidHeaders, getOkCupidOauthToken, getOkCupidMatchesFromSearchQuery } from "./Utils";
+import { getOkCupidLoginForm, getOkCupidHeaders, getOkCupidOauthToken, getOkCupidUserIdListFromSearchQuery,  } from "./Utils";
 import { PuOkCupidEndpoint, PuOkCupidMode } from "./SharedTypes";
 import PuOkCupidModel from "./PuOkCupidModel";
 
@@ -48,17 +48,36 @@ class PuOkCupidClient implements PuApi {
 
     public getProfilesLiked(): any {};
     public getMessages(): any {};
-
     public unlikeProfile(): void {};
-    public likeProfile(): void {};
+
+    public likeProfile(puOkCupidUserId: string): Promise<any> {
+        console.log(getOkCupidHeaders(this.puOkCupidModel.oauthToken));
+        console.log(PuOkCupidEndpoint.LIKE.replace("{userid}", puOkCupidUserId));
+        return RequestAPI.restPostRequest(PuOkCupidEndpoint.LIKE.replace("{userid}", puOkCupidUserId), 
+            {},
+            getOkCupidHeaders(this.puOkCupidModel.oauthToken))
+        .then(() => {
+                this.logger.warn("A mers sa moara ma-sa");
+        }).catch((error) => {
+                this.logger.warn(error);  
+        });
+    };
+
     public messageProfile(): void {};
 
     private getProspectMatches(): Promise<any> {
         return this.login()
-            .then(() => { return this.getUsers()} )
+            .then(() => { 
+                return this.getUsers()} )
             .then((prospectMatches) => {
-                const parsedMatches = getOkCupidMatchesFromSearchQuery(prospectMatches);
-                this.logger.info(JSON.stringify(parsedMatches));
+                // TODO: implement pagination
+                return getOkCupidUserIdListFromSearchQuery(prospectMatches);
+            }).then((puOkCupidUserIds) => {
+                for(let index in puOkCupidUserIds) {
+                    this.logger.log("Trying to like " + puOkCupidUserIds[index]);
+                    this.likeProfile(puOkCupidUserIds[index]);
+
+                }
             });
     }
 }
