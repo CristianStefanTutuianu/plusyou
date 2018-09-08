@@ -23,8 +23,8 @@ type PuOkCupidCredentials = {
 }
 
 enum PuOkCupidMode {
-    DOWNLOAD_PROFILES,
-    MATCH_USERS
+    DOWNLOAD_PROFILES="DOWNLOAD PROFILES",
+    MATCH_USERS="MATCH AND MESSAGE"
 }
 
 type PuOkCupidShortUserProfile = {

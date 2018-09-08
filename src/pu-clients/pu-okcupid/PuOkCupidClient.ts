@@ -1,10 +1,10 @@
-import PuApi from "../../pu-api";
+import {PuClientApi} from "../../pu-api";
 import {RequestAPI, Logger} from "../../pu-utils";
 import { getOkCupidLoginForm, getOkCupidHeaders, getOkCupidOauthToken, getOkCupidUserIdListFromSearchQuery,  } from "./Utils";
-import { PuOkCupidEndpoint, PuOkCupidMode } from "./SharedTypes";
+import { PuOkCupidEndpoint } from "./SharedTypes";
 import PuOkCupidModel from "./PuOkCupidModel";
 
-class PuOkCupidClient implements PuApi {
+class PuOkCupidClient implements PuClientApi {
     private puOkCupidModel: PuOkCupidModel;
     private logger: Logger = new Logger(PuOkCupidClient.name);
 
@@ -13,23 +13,7 @@ class PuOkCupidClient implements PuApi {
         this.logger.log("Initialized client for user: " + puOkCupidModel.credentials.username);
     };
 
-    // TODO: move to PUOKCupidBot
-    public run(): void {
-        switch(this.puOkCupidModel.mode) { 
-            case PuOkCupidMode.MATCH_USERS: { 
-                this.login()
-                    .then(() => this.getUserIds())
-                    .then((userIds: Array<string>) => {
-                        for(let index in userIds) {
-                            this.likeProfile(userIds[index])
-                                .then(() => this.messageProfile(userIds[index]));
-                        }
-                });
-            }  
-         } 
-    };
-
-    public login(): Promise<any> {         
+    public login(): Promise<void> {         
         return RequestAPI.htmlFormPostRequest(
             PuOkCupidEndpoint.LOGIN,
             getOkCupidLoginForm(this.puOkCupidModel.credentials),

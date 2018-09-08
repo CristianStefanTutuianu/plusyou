@@ -1,3 +1,7 @@
-import PuApi from "./PuApi";
+import PuClientApi from "./PuClientApi";
+import PuBotApi from "./PuBotApi";
 
-export default PuApi;
+export {
+    PuBotApi,
+    PuClientApi
+}

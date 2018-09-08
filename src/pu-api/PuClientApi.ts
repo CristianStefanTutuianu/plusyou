@@ -1,4 +1,4 @@
-export default interface PuApi {    
+export default interface PuClientApi {    
     login(): any | Promise<any>;
 
     getProfilesLiked(): any | Promise<any>;
@@ -9,5 +9,4 @@ export default interface PuApi {
     likeProfile(userid: number | string): any | Promise<any>;
     messageProfile(userid: number | string): any | Promise<any>;
 
-    run(mode?:any): any | Promise<any>;
 }
