@@ -1,5 +1,9 @@
 // DOCS: https://www.npmjs.com/package/request-promise
 let requestAPI = require('request-promise');
+let cookie_jar = requestAPI.jar();
+requestAPI = requestAPI.defaults({jar: cookie_jar, strictSSL: false})
+
+
 
 class RequestAPI {
     public static htmlFormPostRequest(uri: string, form?: any, headers?: any): Promise<any> {

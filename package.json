@@ -1,7 +1,7 @@
 {
   "name": "plusyou",
   "version": "1.0.0",
-  "description": "",
+  "description": "***Run the project using: 'npm start'",
   "main": "index.js",
   "scripts": {
     "start": "npm run build:live",
@@ -28,8 +28,17 @@
     "lib"
   ],
   "dependencies": {
+    "9": "0.0.1",
     "date-and-time": "^0.6.2",
     "request": "^2.88.0",
     "request-promise": "^4.2.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CristianStefanTutuianu/plusyou.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CristianStefanTutuianu/plusyou/issues"
+  },
+  "homepage": "https://github.com/CristianStefanTutuianu/plusyou#readme"
 }
