@@ -18,11 +18,11 @@ class PuOkCupidClient implements PuApi {
         switch(this.puOkCupidModel.mode) { 
             case PuOkCupidMode.MATCH_USERS: { 
                 this.login()
-                    .then(() => this.getUsers())
-                    .then((users: any) => {
-                        const userIds: Array<string> = getOkCupidUserIdListFromSearchQuery(users);
+                    .then(() => this.getUserIds())
+                    .then((userIds: Array<string>) => {
                         for(let index in userIds) {
-                            this.likeProfile(userIds[index]); // TODO: then message
+                            this.likeProfile(userIds[index])
+                                .then(() => this.messageProfile(userIds[index]));
                         }
                 });
             }  
@@ -47,14 +47,15 @@ class PuOkCupidClient implements PuApi {
         });
     };
 
-    public getUsers(): Promise<any> {
+    public getUserIds(): Promise<Array<string>> {
         return RequestAPI.restPostRequest(PuOkCupidEndpoint.SEARCH,
                                           this.puOkCupidModel.searchQuery || {},
                                           getOkCupidHeaders(this.puOkCupidModel.oauthToken))
+                .then(response => { return getOkCupidUserIdListFromSearchQuery(response); })
                 .catch((error) => { this.logger.error(error); }); 
     };
 
-    public likeProfile(puOkCupidUserId: string): Promise<any> {
+    public likeProfile(puOkCupidUserId: string): Promise<void> {
         return RequestAPI.restPostRequest(PuOkCupidEndpoint.LIKE.replace("{userid}", puOkCupidUserId), 
                                           {},
                                           getOkCupidHeaders(this.puOkCupidModel.oauthToken))
@@ -62,10 +63,18 @@ class PuOkCupidClient implements PuApi {
                 .catch((error) => { this.logger.error(error) });
     };
 
-    public getProfilesLiked(): any {};
+    // TODO
+    public messageProfile(puOkCupidUserId: string): Promise<void> {
+        return new Promise(()=> {this.logger.log("Messaged profile: " + puOkCupidUserId)})
+    };
+
+    // TODO
+    public getProfilesLiked(): Promise<Array<string>> {
+        return new Promise(()=> {this.logger.log("Message placeholder for getProfilesLiked")});
+    };
+
     public getMessages(): any {};
     public unlikeProfile(): void {};
-    public messageProfile(): void {};
         
 }
 
