@@ -1,6 +1,5 @@
 import PuApi from "../../pu-api";
 import {RequestAPI, Logger} from "../../pu-utils";
-
 import { getOkCupidLoginForm, getOkCupidHeaders, getOkCupidOauthToken, getOkCupidUserIdListFromSearchQuery,  } from "./Utils";
 import { PuOkCupidEndpoint, PuOkCupidMode } from "./SharedTypes";
 import PuOkCupidModel from "./PuOkCupidModel";
@@ -21,7 +20,7 @@ class PuOkCupidClient implements PuApi {
                 this.login()
                     .then(() => this.getUsers())
                     .then((users: any) => {
-                        const userIds: Array<string> = getOkCupidUserIdListFromSearchQuery(users)
+                        const userIds: Array<string> = getOkCupidUserIdListFromSearchQuery(users);
                         for(let index in userIds) {
                             this.likeProfile(userIds[index]); // TODO: then message
                         }
@@ -43,26 +42,24 @@ class PuOkCupidClient implements PuApi {
             this.logger.log("Login success!")
             this.puOkCupidModel.setOauthToken(getOkCupidOauthToken(loginResponse));
         }).catch(error => {
-                this.logger.error("Missing Auth token. ", error);
-                this.logger.warn("User search will default to random values!");
+            this.logger.error("Missing Auth token. ", error);
+            this.logger.warn("User search will default to random values!");
         });
     };
 
     public getUsers(): Promise<any> {
         return RequestAPI.restPostRequest(PuOkCupidEndpoint.SEARCH,
-                this.puOkCupidModel.searchQuery || {},
-                getOkCupidHeaders(this.puOkCupidModel.oauthToken)); 
+                                          this.puOkCupidModel.searchQuery || {},
+                                          getOkCupidHeaders(this.puOkCupidModel.oauthToken))
+                .catch((error) => { this.logger.error(error); }); 
     };
 
     public likeProfile(puOkCupidUserId: string): Promise<any> {
         return RequestAPI.restPostRequest(PuOkCupidEndpoint.LIKE.replace("{userid}", puOkCupidUserId), 
-            {},
-            getOkCupidHeaders(this.puOkCupidModel.oauthToken))
-        .then(() => {
-                this.logger.log("Liked User: " + puOkCupidUserId);
-        }).catch((error) => {
-                this.logger.error(error);  
-        });
+                                          {},
+                                          getOkCupidHeaders(this.puOkCupidModel.oauthToken))
+                .then(() => { this.logger.log("Liked User: " + puOkCupidUserId) })
+                .catch((error) => { this.logger.error(error) });
     };
 
     public getProfilesLiked(): any {};
