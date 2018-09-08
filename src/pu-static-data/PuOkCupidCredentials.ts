@@ -1,7 +1,10 @@
+const globalArgs = process.argv;
+
+// TODO: Add some more structure here
 const puOkCupidCredentials = {
     mock_user: {
-        username: "tutuianucstefan@gmail.com",
-        password: ""
+        username: globalArgs[2],
+        password: globalArgs[3]
     }
 }
 

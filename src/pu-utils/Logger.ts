@@ -27,6 +27,6 @@ export default class Logger {
     const now = new Date();
     const logTime = "[" + date.format(now, 'YYYY/MM/DD HH:mm:ss:SSS').slice(0,22) + "ms] "; 
 
-    return logTime
+    return logTime;
   }
 }

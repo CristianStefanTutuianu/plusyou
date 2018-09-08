@@ -14,10 +14,18 @@ class PuOkCupidClient implements PuApi {
         this.logger.log("Initialized client for user: " + puOkCupidModel.credentials.username);
     };
 
+    // TODO: move to PUOKCupidBot
     public run(): void {
         switch(this.puOkCupidModel.mode) { 
             case PuOkCupidMode.MATCH_USERS: { 
-                this.getProspectMatches();
+                this.login()
+                    .then(() => this.getUsers())
+                    .then((users: any) => {
+                        const userIds: Array<string> = getOkCupidUserIdListFromSearchQuery(users)
+                        for(let index in userIds) {
+                            this.likeProfile(userIds[index]); // TODO: then message
+                        }
+                });
             }  
          } 
     };
@@ -46,40 +54,22 @@ class PuOkCupidClient implements PuApi {
                 getOkCupidHeaders(this.puOkCupidModel.oauthToken)); 
     };
 
-    public getProfilesLiked(): any {};
-    public getMessages(): any {};
-    public unlikeProfile(): void {};
-
     public likeProfile(puOkCupidUserId: string): Promise<any> {
-        console.log(getOkCupidHeaders(this.puOkCupidModel.oauthToken));
-        console.log(PuOkCupidEndpoint.LIKE.replace("{userid}", puOkCupidUserId));
         return RequestAPI.restPostRequest(PuOkCupidEndpoint.LIKE.replace("{userid}", puOkCupidUserId), 
             {},
             getOkCupidHeaders(this.puOkCupidModel.oauthToken))
         .then(() => {
-                this.logger.warn("A mers sa moara ma-sa");
+                this.logger.log("Liked User: " + puOkCupidUserId);
         }).catch((error) => {
-                this.logger.warn(error);  
+                this.logger.error(error);  
         });
     };
 
+    public getProfilesLiked(): any {};
+    public getMessages(): any {};
+    public unlikeProfile(): void {};
     public messageProfile(): void {};
-
-    private getProspectMatches(): Promise<any> {
-        return this.login()
-            .then(() => { 
-                return this.getUsers()} )
-            .then((prospectMatches) => {
-                // TODO: implement pagination
-                return getOkCupidUserIdListFromSearchQuery(prospectMatches);
-            }).then((puOkCupidUserIds) => {
-                for(let index in puOkCupidUserIds) {
-                    this.logger.log("Trying to like " + puOkCupidUserIds[index]);
-                    this.likeProfile(puOkCupidUserIds[index]);
-
-                }
-            });
-    }
+        
 }
 
 export default PuOkCupidClient;

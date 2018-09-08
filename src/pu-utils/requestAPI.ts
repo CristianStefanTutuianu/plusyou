@@ -3,8 +3,6 @@ let requestAPI = require('request-promise');
 let cookie_jar = requestAPI.jar();
 requestAPI = requestAPI.defaults({jar: cookie_jar, strictSSL: false})
 
-
-
 class RequestAPI {
     public static htmlFormPostRequest(uri: string, form?: any, headers?: any): Promise<any> {
         const options = {
@@ -15,11 +13,7 @@ class RequestAPI {
             json: true
         }
 
-        return requestAPI(options, (response: any, body: any, error: any)=> {
-            if(error) {
-                console.log("REJECTED request: ", error.request, " \n REASON: ", error.body | error.message);
-            };
-        });
+        return requestAPI(options, ()=> {});
     }
 
     public static restPostRequest(uri: string, body?: any, headers?: any): Promise<any> {
@@ -38,8 +32,6 @@ class RequestAPI {
     public static getRequest() {
         return Promise.resolve(console.log("makeGetRequest"));
     }
-
-    //TODO: implement more use cases wrappers as needed
 }
 
     
