@@ -1,7 +1,7 @@
 export default interface PuClientApi {    
     login(): any | Promise<any>;
 
-    getProfilesLiked(): any | Promise<any>;
+    getProfilesLiked(): Promise<any>;
     getUserIds(query: any): any | Promise<any>; // search
     getMessages(): any | Promise<any>;
 

@@ -1,4 +1,5 @@
 enum PuOkCupidEndpoint {
+    //Non-OAuth
     LOGIN =  "https://www.okcupid.com/login",
     RATE = "http://www.okcupid.com/quickmatch",
     VISIT_PROFILE = "http://www.okcupid.com/profile/{username}?okc_api=1",

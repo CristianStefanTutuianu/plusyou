@@ -53,8 +53,54 @@ class PuOkCupidClient implements PuClientApi {
     };
 
     // TODO
-    public getProfilesLiked(): Promise<Array<string>> {
-        return new Promise(()=> {this.logger.log("Message placeholder for getProfilesLiked")});
+    public getProfilesLiked(query:any = {}, userIds: Array<string> = []): Promise<any> {
+        let queryStrings = [];
+
+        for(let key in query) {
+            if(query.hasOwnProperty(key)) {
+                queryStrings.push(key + "=" + query[key]);
+            }
+        }
+
+        const queryString: string = queryStrings.join("&");
+        let url: string =  PuOkCupidEndpoint.CONNECTIONS;
+
+        if(queryString) {
+            url += "?" + queryString;
+        }
+
+        this.logger.warn(url);
+
+        return RequestAPI.getRequest(url, getOkCupidHeaders(this.puOkCupidModel.oauthToken)).then((results: any) => {
+            const userData: Array<any> = results.data;
+            
+            if(userData) {
+                userData.forEach(data => {
+                    userIds.push(data.user.userid);
+                });
+            }
+
+            // Pagination
+            const totalCount: number = results.paging.total;
+            const after: string = results.paging.cursors.after;
+            const before: string = results.paging.cursors.before;
+            if(after != null && userIds.length < totalCount) {
+                if (query.after!= after ) {
+                    query = {
+                        "after": after
+                    }
+                } else {
+                    query = {
+                        "before": before
+                    }
+                }
+                return this.getProfilesLiked(query, userIds);
+            } else {
+                this.logger.log("Finished paginating :: getProfilesLiked");
+                this.logger.log(JSON.stringify(userIds));
+                return Promise.resolve(userIds);
+            }
+        });
     };
 
     public getMessages(): any {};

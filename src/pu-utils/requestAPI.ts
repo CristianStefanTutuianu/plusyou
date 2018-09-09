@@ -29,8 +29,14 @@ class RequestAPI {
     }
 
     //TODO
-    public static getRequest() {
-        return Promise.resolve(console.log("makeGetRequest"));
+    public static getRequest(uri:string, headers:any) {
+        const options = {
+            method: 'GET',
+            url: uri,
+            headers: headers,
+            json: true
+        }
+        return requestAPI(options);
     }
 }
 

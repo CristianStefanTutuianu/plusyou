@@ -33,7 +33,11 @@ function getOkCupidUserIdListFromSearchQuery(matches: PuOkCupidSearchUserProfile
   let userIds: Array<string> = [];
 
   for(let index in usersList) {
-    userIds.push(usersList[index].userid)
+    // filter already liked users
+
+    if(!usersList[index].likes.you_like) {
+      userIds.push(usersList[index].userid)
+    }
   }
 
   return userIds;
