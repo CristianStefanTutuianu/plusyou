@@ -6,8 +6,10 @@ const puOkCupidMessages = {
         "I got myself relegated so I can be in the same league with you! What's your excuse?!",
         "What's your number one reason for not seeing people on this app? If you're honest, I'll throw a cheesy like :)"
     ],
-    hookup: [],
-    date: []
+    test: [
+        "Hello! What is love?",
+        "Thanks to planned parenthood, I never needed an abortion"
+    ],
 };
 
 export default puOkCupidMessages

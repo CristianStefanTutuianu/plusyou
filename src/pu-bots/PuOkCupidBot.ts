@@ -13,24 +13,34 @@ export default class PuOkCupidBot implements PuBotApi{
         this.logger.log("Bot spawned!");
     }
 
-    public run(mode:PuOkCupidMode, location?:any): void {
+    public run(mode:PuOkCupidMode, location?:any, iterations?:number, sleepBetwen?:number): void {
         const model = new PuOkCupidModel(mode, this.credentials)
         model.withSearchQuery(location);
 
         const client = new PuOkCupidClient(model);
 
         this.logger.warn("Bot running in " + mode + " mode!");
+
         switch(mode) { 
             case PuOkCupidMode.MATCH_USERS: { 
                 client.login()
-                    .then(() => client.getUserIds())
-                    .then((userIds: Array<string>) => {
-                        for(let index in userIds) {
-                            client.likeProfile(userIds[index])
-                                .then(() => client.messageProfile(userIds[index], puOkCupidMessages.random[Math.floor(Math.random() * puOkCupidMessages.random.length)]));
-                        }
-                });
+                    .then(() => this.likeAndMessageLoop(client));
             }  
-         } 
+        }; 
     };
+
+    private async likeAndMessageLoop(client: PuOkCupidClient, iterations: number = 10, sleepBetween: number = 3000): Promise<void> {
+        for(let index = 0; index < iterations; index++) {
+            client.getUserIds()
+            .then((userIds: Array<string>) => {
+                for(let index in userIds) {
+                    client.likeProfile(userIds[index])
+                        .then(() => client.messageProfile(userIds[index], puOkCupidMessages.random[Math.floor(Math.random() * puOkCupidMessages.random.length)]));
+                }
+            });
+
+            this.logger.log("Sleeping between iterations for: " + sleepBetween + "ms");
+            await new Promise(resolve => setTimeout(resolve, sleepBetween));
+        }
+    }
 }
