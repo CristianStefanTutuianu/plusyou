@@ -48,8 +48,15 @@ class PuOkCupidClient implements PuClientApi {
     };
 
     // TODO
-    public messageProfile(puOkCupidUserId: string): Promise<void> {
-        return new Promise(()=> {this.logger.log("Messaged profile: " + puOkCupidUserId)})
+    public messageProfile(puOkCupidUserId: string, message: string): Promise<void> {
+        const payload = {
+            body: message,
+            receiverid: puOkCupidUserId
+        };
+
+        return RequestAPI.restPostRequest(PuOkCupidEndpoint.SEND_MESSAGE, payload, getOkCupidHeaders(this.puOkCupidModel.oauthToken))
+                         .then(() => { this.logger.log("Messaged user: " + puOkCupidUserId + " with " + message); })
+                         .catch((error) => { this.logger.error(error) });
     };
 
     // TODO

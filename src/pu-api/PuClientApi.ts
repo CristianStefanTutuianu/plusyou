@@ -7,6 +7,6 @@ export default interface PuClientApi {
 
     unlikeProfile(): any | Promise<any>;
     likeProfile(userid: number | string): any | Promise<any>;
-    messageProfile(userid: number | string): any | Promise<any>;
+    messageProfile(userid: number | string, message: string): any | Promise<any>;
 
 }
