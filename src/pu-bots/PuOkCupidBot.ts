@@ -29,16 +29,17 @@ export default class PuOkCupidBot implements PuBotApi{
         }; 
     };
 
-    private async likeAndMessageLoop(client: PuOkCupidClient, iterations: number = 10, sleepBetween: number = 3000): Promise<void> {
+    private async likeAndMessageLoop(client: PuOkCupidClient,iterations: number = 10, sleepBetween: number = 3000): Promise<void> {
         for(let index = 0; index < iterations; index++) {
             client.getUserIds()
             .then((userIds: Array<string>) => {
                 for(let index in userIds) {
                     client.likeProfile(userIds[index])
-                        .then(() => client.messageProfile(userIds[index], puOkCupidMessages.random[Math.floor(Math.random() * puOkCupidMessages.random.length)]));
+                        .then(() => client.messageProfile(userIds[index],
+                            puOkCupidMessages.random[Math.floor(Math.random() * puOkCupidMessages.random.length)]));
                 }
             });
-
+            
             this.logger.log("Sleeping between iterations for: " + sleepBetween + "ms");
             await new Promise(resolve => setTimeout(resolve, sleepBetween));
         }
