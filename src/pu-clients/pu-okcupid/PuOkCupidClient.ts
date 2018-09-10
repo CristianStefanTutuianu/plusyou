@@ -19,7 +19,6 @@ class PuOkCupidClient implements PuClientApi {
             getOkCupidLoginForm(this.puOkCupidModel.credentials),
             getOkCupidHeaders()
         ).then(loginResponse => {
-            // Status code returned in case of invalid password + email
             if (loginResponse.status == 104) {
                 throw new Error(loginResponse.status_str);
             }
@@ -47,7 +46,6 @@ class PuOkCupidClient implements PuClientApi {
                 .catch((error) => { this.logger.error(error) });
     };
 
-    // TODO
     public messageProfile(puOkCupidUserId: string, message: string): Promise<void> {
         const payload = {
             body: message,
@@ -59,7 +57,7 @@ class PuOkCupidClient implements PuClientApi {
                          .catch((error) => { this.logger.error(error) });
     };
 
-    // TODO
+    // TODO - there is a bug in retrieving paginated results - right endpoint gets called - wrong results
     public getProfilesLiked(query:any = {}, userIds: Array<string> = []): Promise<any> {
         let queryStrings = [];
 

@@ -28,7 +28,6 @@ class RequestAPI {
         return requestAPI(options);
     }
 
-    //TODO
     public static getRequest(uri:string, headers:any) {
         const options = {
             method: 'GET',
