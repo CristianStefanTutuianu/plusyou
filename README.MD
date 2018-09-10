@@ -1,3 +1,18 @@
+## About
+Supports:
+OkCupid
+
+Planned support:
+Tinder
+Hinge
+Bumble
+
+Features:
+
+1. login & swiping & messaging 
+2. data mining
+
+
 ## How to run the project
 
 ***Run the project using: 
